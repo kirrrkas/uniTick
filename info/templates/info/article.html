@@ -1,0 +1,58 @@
+{% extends 'tickets/base.html' %}
+{% load static %}
+{% block header %}
+    <link rel="stylesheet" href="{% static 'info/css/info_style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section id="blog" class="blog">
+        <div class="container" data-aos="fade-up">
+
+            <div class="row justify-content-center">
+
+                <div class="col-lg-8 entries">
+
+                    <article class="entry entry-single card">
+
+                        <div class="entry-img">
+                            <img src="{{ MEDIA_URL }}{{ article.image }}" alt="" class="img-fluid">
+                        </div>
+
+                        <h2 class="entry-title">
+                            {{ article.title }}
+                        </h2>
+
+                        <div class="entry-meta">
+                            <ul>
+                                <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <time datetime="2020-01-01">{{ article.time_create }}</time></li>
+                            </ul>
+                        </div>
+
+                        <div class="entry-content">
+                            {{ article.content|linebreaks }}
+                        </div>
+
+                        <div class="entry-footer">
+                            {% if article.tournaments.all %}
+                                <i class="bi bi-trophy"></i>
+                                <ul class="cats">
+                                    {% for tournament in article.tournaments.all %}
+                                        <li><a href="{% url 'info:tournament_info' tournament_slug=tournament.tickets_key.slug %}">{{ tournament }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                            {% if article.clubs.all %}
+                                <i class="bi bi-shield"></i>
+                                <ul class="tags">
+                                    {% for club in article.clubs.all %}
+                                        <li><a href="{% url 'info:club_info' club_slug=club.tickets_key.slug %}">{{ club }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    </article><!-- End blog entry -->
+                </div><!-- End blog entries list -->
+            </div>
+        </div>
+    </section><!-- End Blog Single Section -->
+{% endblock %}

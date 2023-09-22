@@ -1,0 +1,191 @@
+{% extends 'tickets/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load humanize %}
+{% block content %}
+
+    <section class="section">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body pt-3">
+                        {#                  <h5 class="card-title">Профиль<span></span></h5>#}
+                        <ul class="nav nav-tabs nav-tabs-bordered">
+
+
+                            <li class="nav-item profile">
+                                <button class="nav-link active profile" data-bs-toggle="tab" data-bs-target="#profile-edit">
+                                    Изменить профиль
+                                </button>
+                            </li>
+
+                            <li class="nav-item profile">
+                                <button class="nav-link profile" data-bs-toggle="tab" data-bs-target="#profile-tickets">
+                                    Билеты
+                                </button>
+                            </li>
+
+                            <li class="nav-item profile">
+                                <button class="nav-link profile" data-bs-toggle="tab" data-bs-target="#profile-orders">
+                                    Заказы
+                                </button>
+                            </li>
+
+                        </ul>
+
+                        <div class="tab-content pt-2">
+
+                            <div class="tab-pane fade profile-edit pt-3 show active" id="profile-edit">
+
+                                <!-- Profile Edit Form -->
+                                <form method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+
+                                    <div class="form-error">{{ form.non_field_errors }}</div>
+
+                                    {% for field in form %}
+                                        <div class="row mb-3">
+                                            <label for="{{ field.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">
+                                                {{field.label}}
+                                            </label>
+                                            <div class="col-md-8 col-lg-9">
+                                                {% if field|widget_type == 'select' %}
+                                                    {{ field|add_class:"form-select" }}
+                                                {% elif field|widget_type == 'checkboxinput' %}
+                                                    {{ field|add_class:"form-check-input" }}
+                                                {% else %}
+                                                    {{ field|add_class:"form-control" }}
+                                                {% endif %}
+                                            </div>
+                                            <div class="form-error">{{ field.errors }}</div>
+                                        </div>
+                                    {% endfor %}
+
+                                    <div class="text-center">
+                                        <button class="btn btn-cust" type="submit">Сохранить изменения</button>
+                                        <a href="{% url 'userapp:password_change' %}" class="btn btn-cust btn-outline">Изменить пароль</a>
+                                    </div>
+                                </form><!-- End Profile Edit Form -->
+
+                            </div>
+
+                            <div class="tab-pane fade profile-overview" id="profile-tickets">
+
+                                {% if tickets %}
+                                    <div class="row">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">Матч</th>
+                                                    <th scope="col">Стадион</th>
+                                                    <th scope="col">Место</th>
+                                                    <th scope="col">Цена</th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for ticket in tickets %}
+                                                    <tr>
+                                                        <th>{{ ticket.t_match }} {{ ticket.t_match.datetime_match }}</th>
+                                                        <td>{{ ticket.t_match.stadium }}</td>
+                                                        <td>{{ ticket.t_place }}</td>
+                                                        <td>{{ ticket.price }}₽</td>
+                                                        <td><a href=""><button type="button" class="btn btn-outline btn-cust">Скачать</button></a></td>
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    {% else %}
+                                    <h5 class="card-title">Вы ещё не приобретали билеты</h5>
+                                {% endif %}
+
+                            </div>
+
+                        <div class="tab-pane fade profile-overview " id="profile-orders">
+
+                                {% if orders %}
+                                    {% for order, details in orders.items %}
+                                        <br>
+
+                                        <p></p>
+
+                                    <div class="card border border-primary mb-4 shadow-0">
+              <div class="card-body p-3">
+                <header class="d-lg-flex">
+                  <div class="flex-grow-1">
+                    <h5 class="mb-0">Номер заказа: {{ order.pk }} <i class="dot"></i><span class="text-success">{{ order.get_status_display  }}</span>
+                    </h5>
+                    <span class="text-muted">Дата создания: {{ order.time_create }}</span>
+                  </div>
+                  <div>
+                    <a href="#" class="btn btn-sm btn-outline-danger">Отменить заказ</a>
+{#                    <a href="#" class="btn btn-sm btn-primary shadow-0">Track order</a>#}
+                  </div>
+                </header>
+                <hr />
+                <div class="row">
+                  <div class="col-lg-6">
+                    <p class="mb-0 text-muted">Контакты</p>
+                    <p class="m-0">
+                        {{ order.customer.get_full_name }} <br />
+                      Телефон: {{ order.phone_number }} <br />
+                      Email: {{ order.email }}
+                    </p>
+                  </div>
+                  <div class="col-lg-6 border-start">
+                    <p class="mb-0 text-muted">Адрес доставки</p>
+                    <p class="m-0">
+                        {{ order.shipping_address }}
+                    </p>
+                  </div>
+{#                  <div class="col-lg-4 border-start">#}
+{#                    <p class="mb-0 text-muted">Payment</p>#}
+{#                    <p class="m-0">#}
+{#                      <span class="text-success"> Visa **** 4216 </span> <br />#}
+{#                      Shipping fee: $56 <br />#}
+{#                      Total paid: $456#}
+{#                    </p>#}
+{#                  </div>#}
+                </div>
+                <hr />
+                <ul class="row list-unstyled">
+                    {% for detail in details %}
+                  <li class="col-xl-4 col-lg-6">
+                    <div class="d-flex mb-3 mb-xl-0">
+                      <div class="me-3">
+                        <img width="72" height="72" src="{{ MEDIA_URL }}{{ detail.product.product.productphoto_set.first.photo }}" class="img-sm rounded border" />
+                      </div>
+                      <div class="">
+                        <p class="mb-0">{{ detail.product.product }}<br>{{ detail.product.option_value }}</p>
+                        <strong> {{ detail.quantity }} шт = {{ detail.sum_product|intcomma }} ₽</strong>
+                      </div>
+                    </div>
+                  </li>
+                        {% endfor %}
+                </ul>
+              <hr />
+                  <p><strong>Сумма: {{ order.cost_order|intcomma }} ₽</strong></p>
+              </div>
+            </div>
+{% endfor %}
+                                    {% else %}
+                                    <h5 class="card-title">Вы ещё не делали заказы</h5>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
+    <script src="{% static 'userapp/js/phone_number_mask.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,133 @@
+{% extends 'tickets/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block header %}
+    <link rel="stylesheet" href="{% static 'info/css/info_style.css' %}">
+{% endblock %}
+{% block content %}
+
+    <section id="blog" class="blog">
+        <div class="container" data-aos="fade-up">
+
+            <div class="row">
+                <div class="col-lg-3">
+                    <button
+                            class="btn btn-outline-secondary mb-3 w-100 d-lg-none"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent"
+                            aria-controls="navbarSupportedContent"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation"
+                            id="toggle-button"
+                    >
+                        <span>Фильтры</span>
+                    </button>
+                    <form method="get">
+
+                        <div class="collapse card d-lg-block mb-5" id="navbarSupportedContent">
+                            <div class="accordion" id="accordionPanels">
+                                {% for field in filter.form %}
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header " id="{{ field.auto_id }}-heading">
+                                            <button class="accordion-button text-dark bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#{{ field.auto_id }}" aria-expanded="true" aria-controls="{{ field.auto_id }}">
+                                                {{field.label}}
+                                            </button>
+                                        </h2>
+                                        <div id="{{ field.auto_id }}" class="accordion-collapse collapse show" aria-labelledby="{{ field.auto_id }}">
+                                            <div class="accordion-body">
+                                                {% if field|widget_type == 'select' or field|widget_type == 'csvselect' %}
+                                                    {{ field|add_class:"form-select show" }}
+                                                {% elif field|widget_type == 'checkboxselectmultiple' %}
+                                                    {% for choice in field %}
+                                                        <div >
+                                                            {{ choice }}</div>
+                                                    {% endfor %}
+                                                {% elif field|widget_type == 'rangewidget' %}
+                                                    <div class="row mb-3 justify-content-xl-center align-items-center">
+                                                        {{ field|add_class:"form-control ml-xl-4 mr-xl-4"|append_attr:"style:max-width: 90px;" }}
+                                                    </div>
+                                                {% else %}
+                                                    {{ field|add_class:"form-control show" }}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="row p-3 justify-content-center align-items-center">
+                                <input type="submit" class="btn btn-cust btn-outline w-75" value="Применить"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-lg-9 entries">
+                    {% for article in filter.qs %}
+                        <article class="entry card">
+                            <a href="{% url 'info:article' article_slug=article.slug%}">
+                                <div class="entry-img">
+                                    <img src="{{ MEDIA_URL }}{{ article.image }}" alt="" class="img-fluid">
+                                </div>
+
+                                <h2 class="entry-title">
+                                    {{ article.title }}
+                                </h2>
+                            </a>
+                            <div class="entry-meta">
+                                <ul>
+                                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-single.html"><time datetime="2020-01-01">{{ article.time_create }}</time></a></li>
+
+                                </ul>
+                            </div>
+
+                            <div class="entry-content">
+                                <p>
+                                    {{ article.content|linebreaks|truncatewords:50 }}
+                                </p>
+                                <div class="read-more">
+                                    <a class="btn btn-cust" href="{% url 'info:article' article_slug=article.slug %}">Читать</a>
+                                </div>
+                            </div>
+
+                        </article><!-- End blog entry -->
+{#                        <div class="card">#}
+{#                        <div class="row gx-5">#}
+{#  <div class="col-md-6 mb-4">#}
+{#    <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">#}
+{#      <img src="{{ MEDIA_URL }}{{ article.image }}" class="img-fluid" />#}
+{#      <a href="#!">#}
+{#        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>#}
+{#      </a>#}
+{#    </div>#}
+{#  </div>#}
+{##}
+{#  <div class="col-md-6 mb-4">#}
+{#    <span class="badge bg-danger px-2 py-1 shadow-1-strong mb-3">News of the day</span>#}
+{#    <h4><strong>Facilis consequatur eligendi</strong></h4>#}
+{#    <p class="text-muted">#}
+{#      Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis consequatur#}
+{#      eligendi quisquam doloremque vero ex debitis veritatis placeat unde animi laborum#}
+{#      sapiente illo possimus, commodi dignissimos obcaecati illum maiores corporis.#}
+{#    </p>#}
+{#    <button type="button" class="btn btn-primary">Read more</button>#}
+{#  </div>#}
+{#</div></div>#}
+                    {% endfor %}
+                    <!-- End blog entry -->
+
+                    {#            <div class="blog-pagination">#}
+                    {#              <ul class="justify-content-center">#}
+                    {#                <li><a href="#">1</a></li>#}
+                    {#                <li class="active"><a href="#">2</a></li>#}
+                    {#                <li><a href="#">3</a></li>#}
+                    {#              </ul>#}
+                    {#            </div>#}
+
+                </div><!-- End blog entries list -->
+
+            </div><!-- End sidebar -->
+
+        </div><!-- End blog sidebar -->
+    </section>
+{% endblock %}

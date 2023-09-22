@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{title}}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="{% static 'tickets/images/logo.png' %}" type="image/png">
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@100&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+    <link href="{% static 'tickets/css/base.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'tickets/css/nav_style.css' %}">
+
+    {% block header %}{% endblock %}
+</head>
+<body>
+{% block mainmenu %}
+    <nav class="navbar navbar-expand-lg ftco_navbar ftco-navbar-light" id="ftco-navbar">
+        <div class="container">
+            <a href="{% url 'tickets:home' %}" class="navbar-brand">
+                <img src="{% static 'tickets/images/logo.png' %}" alt="Логотип">UniTick
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="fa fa-bars"></span> Меню
+            </button>
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto mr-md-3">
+                    <li class="nav-item"><a href="{% url 'tickets:home' %}" class="nav-link">Билеты</a></li>
+
+                    <li class="nav-item"></li>
+                    <li class="nav-item">
+                        <a href="{% url 'info:home' %}" class="nav-link">Новости</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="{% url 'shop:home' %}" class="nav-link" data-bs-toggle="shop">Атрибутика</a>
+                    </li>
+                    <li class="nav-item d-md-flex align-items-center me-2">
+                        <a href="{% url 'shop:cart' %}" class="nav-link d-flex align-items-center justify-content-center icon-cart p-2">
+                            <i class="fa fa-shopping-cart"></i>
+                            {% if request.session.cart|length > 0 %}
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ request.session.cart|length }}
+                                </span>
+                            {% endif %}
+                            <b class="caret"></b>
+
+                        </a>
+                    </li>
+
+
+                    {% if request.user.is_authenticated %}
+                        <li class="nav-item dropdown pe-3">
+                            <a class="nav-link nav-profile d-flex align-items-center pe-0 dropdown-toggle" href="{% url 'userapp:profile' %}" data-bs-toggle="dropdown">
+                                {{ user.last_name }}
+                            </a>
+
+                            <ul class="dropdown-menu dropdown-menu-right profile">
+
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center" href="{% url 'userapp:profile' %}">
+                                        <i class="bi bi-person"></i>
+                                        <span>Профиль</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <div class="dropdown-divider"></div>
+                                </li>
+
+                                {% if request.user.is_staff %}
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center" href="{% url 'tickets:add_match' %}">
+                                            <i class="bi bi-plus-circle"></i>
+                                            <span>Добавить матч</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div class="dropdown-divider"></div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center" href="{% url 'tickets:add_match' %}">
+                                            <i class="bi bi-pencil-square"></i>
+                                            <span>Изменить матчи</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div class="dropdown-divider"></div>
+                                    </li>
+                                {% endif %}
+
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center" href="{% url 'userapp:logout' %}">
+                                        <i class="bi bi-box-arrow-right"></i>
+                                        <span>Выйти</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+
+
+
+
+                        </li>
+                    {% else %}
+                        <li class="nav-item dropdown pe-3">
+                            <a class="nav-link nav-profile d-flex align-items-center pe-0 " href="{% url 'userapp:login' %}">
+                                Войти
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown pe-3">
+                            <a class="nav-link nav-profile d-flex align-items-center pe-0 " href="{% url 'userapp:register' %}">
+                                Зарегистрироваться
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock mainmenu %}
+
+<!-- Хлебные крошки -->
+{% block breadcrumbs %}
+{% endblock %}
+
+<!-- Блок контента -->
+<main id="main" class="main">
+    {% block content %}
+    {% endblock %}
+</main>
+<!-- Конец блока контента -->
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+<script src="{% static 'tickets/js/nav.js' %}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

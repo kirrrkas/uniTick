@@ -1,0 +1,179 @@
+{% extends 'tickets/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load humanize %}
+{% load cart %}
+{% block content %}
+    <section class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8 col-lg-8 mb-4">
+                    {% if not request.user.is_authenticated %}
+                        <div class="card mb-4 border shadow-0">
+                            <div class="p-4 d-flex justify-content-between">
+                                <div class="">
+                                    <h5>Вы не авторизованы</h5>
+                                    <p class="mb-0 text-wrap ">Оформлять заказы могут только авторизованные пользователи</p>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center flex-column flex-md-row">
+                                    <a href="#" class="btn btn-cust btn-outline me-0 me-md-2 mb-2 mb-md-0 w-100">Зарегистрироваться</a>
+                                    <a href="#" class="btn  btn-cust shadow-0 text-nowrap w-100">Войти</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if not products %}
+                        <div class="card mb-4 border shadow-0">
+                            <div class="p-4 d-flex justify-content-between">
+                                <div class="">
+                                    <h5 class="card-title">Вы не добавили ни одного товара в корзину</h5>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center flex-column flex-md-row">
+                                    <a href="{% url 'shop:home' %}" class="btn  btn-cust shadow-0 text-nowrap w-100">Перейти к покупкам</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    {% else %}
+                        <!-- Checkout -->
+                        <div class="card shadow-0 border">
+                            <div class="p-4">
+                                <h5 class="card-title mb-3">Личные данные</h5>
+                                <form id="product-form" method="post">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-12 col-lg-6 mb-3">
+                                            <p class="mb-0">Номер телефона</p>
+                                            <div class="form-outline">
+                                                {{ form.phone_number|add_class:"form-control" }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-lg-6 mb-3">
+                                            <p class="mb-0">Email</p>
+                                            <div class="form-outline">
+                                                {{ form.email|add_class:"form-control" }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="my-4" />
+
+                                    <h5 class="card-title mb-3">Доставка</h5>
+                                    <div class="row">
+                                        <div class="col-sm-12 mb-3">
+                                            <p class="mb-0">Адрес</p>
+                                            <div class="form-outline">
+                                                {{ form.shipping_address|add_class:"form-control"|append_attr:"placeholder:Регион, город, улица, дом, квартира" }}
+                                            </div>
+                                        </div>
+
+                                        {#                                <div class="col-sm-4 col-6 mb-3">#}
+                                        {#                                    <p class="mb-0">Почтовый индекс</p>#}
+                                        {#                                    <div class="form-outline">#}
+                                        {#                                        <input type="text" id="typeText" class="form-control" />#}
+                                        {#                                    </div>#}
+                                        {#                                </div>#}
+                                    </div>
+
+                                    {#                            <div class="mb-3">#}
+                                    {#                                <p class="mb-0">Комментарий к заказу</p>#}
+                                    {#                                <div class="form-outline">#}
+                                    {#                                    <textarea class="form-control" id="textAreaExample1" rows="2"></textarea>#}
+                                    {#                                </div>#}
+                                    {#                            </div>#}
+
+                                    <div class="float-end">
+                                        <button type="submit" name="buy_button" class="btn btn-cust w-100 shadow-0 mb-2" id="action--buy">
+                                            Оформить заказ
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- Checkout -->
+                        </div>
+                        <div class="col-xl-4 col-lg-4 d-flex justify-content-center justify-content-lg-end">
+                            <div class="ms-lg-4 mt-4 mt-lg-0" style="max-width: 320px;">
+                                <div class="d-flex justify-content-between">
+                                    <p class="mb-2">Итого</p>
+                                    <p class="mb-2 fw-bold">{{sum_cart|intcomma}} рублей</p>
+                                </div>
+
+                                <hr />
+                                <h6 class="text-dark my-4">Товары</h6>
+                                {% for product_value, quantity_price in products.items %}
+                                    <div class="d-flex align-items-center mb-4">
+                                        <div class="me-3 position-relative">
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
+                            {{ quantity_price.0 }}
+                            </span>
+                                            <img src="{{ MEDIA_URL }}{{ product_value.product.productphoto_set.first.photo }}" style="height: 96px; width: 96px;" class="img-sm rounded border" />
+                                        </div>
+                                        <div class="">
+                                            <a href="{% url 'shop:product' product_slug=product_value.product.slug %}" class="">
+                                                {{ product_value.product.name }} <br />
+
+                                            </a>
+                                            <div class="price text-muted">
+                                                {{ product_value.option_value }}<br />
+                                                Всего: {{ quantity_price.1|intcomma }}₽</div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{#{% block scripts %}#}
+{#    <script src="https://widget.cloudpayments.ru/bundles/cloudpayments.js"></script>#}
+{#    <script>#}
+{#    this.pay = function () {#}
+{# var widget = new cp.CloudPayments();#}
+{#    widget.pay('auth', // или 'charge'#}
+{#        { //options#}
+{#            publicId: 'test_api_00000000000000000000002', //id из личного кабинета#}
+{#            description: 'Оплата товаров в example.com', //назначение#}
+{#            amount: {{ sum_cart }}, //сумма#}
+{#            currency: 'RUB', //валюта#}
+{#            accountId: 'user@example.com', //идентификатор плательщика (необязательно)#}
+{#            invoiceId: '1234567', //номер заказа  (необязательно)#}
+{#            email: 'user@example.com', //email плательщика (необязательно)#}
+{#            skin: "mini", //дизайн виджета (необязательно)#}
+{#            autoClose: 3, //время в секундах до авто-закрытия виджета (необязательный)#}
+{#            data: {#}
+{#                myProp: 'myProp value'#}
+{#            },#}
+{#            payer: {#}
+{#                firstName: 'Тест',#}
+{#                lastName: 'Тестов',#}
+{#                middleName: 'Тестович',#}
+{#                birth: '1955-02-24',#}
+{#                address: 'тестовый проезд дом тест',#}
+{#                street: 'Lenina',#}
+{#                city: 'MO',#}
+{#                country: 'RU',#}
+{#                phone: '123',#}
+{#                postcode: '345'#}
+{#            }#}
+{#        },#}
+{#        {#}
+{#            onSuccess: function (options) { // success#}
+{#                //действие при успешной оплате#}
+{#            },#}
+{#            onFail: function (reason, options) { // fail#}
+{#                //действие при неуспешной оплате#}
+{#            },#}
+{#            onComplete: function (paymentResult, options) { //Вызывается как только виджет получает от api.cloudpayments ответ с результатом транзакции.#}
+{#                //например вызов вашей аналитики Facebook Pixel#}
+{#            }#}
+{#        }#}
+{#    )};#}
+{#    </script>#}
+{#    <script>#}
+{#    $('#action--buy').click(pay);#}
+{#    </script>#}
+{#{% endblock %}#}

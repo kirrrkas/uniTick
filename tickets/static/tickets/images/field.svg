@@ -1,0 +1,112 @@
+<svg width="94" height="124" xmlns="http://www.w3.org/2000/svg">
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="126" width="96" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g id="svg_1">
+   <g id="svg_2">
+    <g id="svg_3">
+     <g id="svg_4">
+      <rect id="svg_5" y="2" x="2" width="90" height="120" fill="#B9D53C"/>
+     </g>
+    </g>
+   </g>
+   <g id="svg_6">
+    <g id="svg_7" opacity="0.3">
+     <g id="svg_8">
+      <g id="svg_9">
+       <rect id="svg_10" y="2" x="3" width="8" height="120" fill="#FFFFFF"/>
+      </g>
+     </g>
+    </g>
+    <g id="svg_11" opacity="0.3">
+     <g id="svg_12">
+      <g id="svg_13">
+       <rect id="svg_14" y="2" x="19" width="8" height="120" fill="#FFFFFF"/>
+      </g>
+     </g>
+    </g>
+    <g id="svg_15" opacity="0.3">
+     <g id="svg_16">
+      <g id="svg_17">
+       <rect id="svg_18" y="2" x="35" width="8" height="120" fill="#FFFFFF"/>
+      </g>
+     </g>
+    </g>
+    <g id="svg_19" opacity="0.3">
+     <g id="svg_20">
+      <g id="svg_21">
+       <rect id="svg_22" y="2" x="51" width="8" height="120" fill="#FFFFFF"/>
+      </g>
+     </g>
+    </g>
+    <g id="svg_23" opacity="0.3">
+     <g id="svg_24">
+      <g id="svg_25">
+       <rect id="svg_26" y="2" x="67" width="8" height="120" fill="#FFFFFF"/>
+      </g>
+     </g>
+    </g>
+    <g id="svg_27" opacity="0.3">
+     <g id="svg_28">
+      <g id="svg_29">
+       <rect id="svg_30" y="2" x="83" width="8" height="120" fill="#FFFFFF"/>
+      </g>
+     </g>
+    </g>
+   </g>
+   <g id="svg_31">
+    <g id="svg_32">
+     <g id="svg_33">
+      <path id="svg_34" fill="#FFFFFF" d="m62,18.5l-30,0c-0.8,0 -1.5,-0.7 -1.5,-1.5l0,-15c0,-0.8 0.7,-1.5 1.5,-1.5l30,0c0.8,0 1.5,0.7 1.5,1.5l0,15c0,0.8 -0.7,1.5 -1.5,1.5zm-28.5,-3l27,0l0,-12l-27,0l0,12z"/>
+     </g>
+    </g>
+   </g>
+   <g id="svg_35">
+    <g id="svg_36">
+     <g id="svg_37">
+      <path id="svg_38" fill="#FFFFFF" d="m62,123.5l-30,0c-0.8,0 -1.5,-0.7 -1.5,-1.5l0,-15c0,-0.8 0.7,-1.5 1.5,-1.5l30,0c0.8,0 1.5,0.7 1.5,1.5l0,15c0,0.8 -0.7,1.5 -1.5,1.5zm-28.5,-3l27,0l0,-12l-27,0l0,12z"/>
+     </g>
+    </g>
+   </g>
+   <g id="svg_39">
+    <g id="svg_40">
+     <g id="svg_41">
+      <path id="svg_42" fill="#FFFFFF" d="m92,63.5l-90,0c-0.8,0 -1.5,-0.7 -1.5,-1.5s0.7,-1.5 1.5,-1.5l90,0c0.8,0 1.5,0.7 1.5,1.5s-0.7,1.5 -1.5,1.5z"/>
+     </g>
+    </g>
+   </g>
+   <g id="svg_43">
+    <g id="svg_44">
+     <g id="svg_45">
+      <path id="svg_46" fill="#62355C" d="m92,123.5l-90,0c-0.8,0 -1.5,-0.7 -1.5,-1.5l0,-120c0,-0.8 0.7,-1.5 1.5,-1.5l90,0c0.8,0 1.5,0.7 1.5,1.5l0,120c0,0.8 -0.7,1.5 -1.5,1.5zm-88.5,-3l87,0l0,-117l-87,0l0,117z"/>
+     </g>
+    </g>
+   </g>
+   <g id="svg_47">
+    <g id="svg_48">
+     <g id="svg_49">
+      <path id="svg_50" fill="#FFFFFF" d="m47,73.5c-6.3,0 -11.5,-5.2 -11.5,-11.5s5.2,-11.5 11.5,-11.5s11.5,5.2 11.5,11.5s-5.2,11.5 -11.5,11.5zm0,-20c-4.7,0 -8.5,3.8 -8.5,8.5s3.8,8.5 8.5,8.5s8.5,-3.8 8.5,-8.5s-3.8,-8.5 -8.5,-8.5z"/>
+     </g>
+    </g>
+   </g>
+   <g id="svg_51">
+    <g id="svg_52">
+     <g id="svg_53">
+      <path id="svg_54" fill="#FFFFFF" d="m47,28.5c-6.3,0 -11.5,-5.2 -11.5,-11.5c0,-0.8 0.7,-1.5 1.5,-1.5s1.5,0.7 1.5,1.5c0,4.7 3.8,8.5 8.5,8.5s8.5,-3.8 8.5,-8.5c0,-0.8 0.7,-1.5 1.5,-1.5s1.5,0.7 1.5,1.5c0,6.3 -5.2,11.5 -11.5,11.5z"/>
+     </g>
+    </g>
+   </g>
+   <g id="svg_55">
+    <g id="svg_56">
+     <g id="svg_57">
+      <path id="svg_58" fill="#FFFFFF" d="m57,108.5c-0.8,0 -1.5,-0.7 -1.5,-1.5c0,-4.7 -3.8,-8.5 -8.5,-8.5s-8.5,3.8 -8.5,8.5c0,0.8 -0.7,1.5 -1.5,1.5s-1.5,-0.7 -1.5,-1.5c0,-6.3 5.2,-11.5 11.5,-11.5s11.5,5.2 11.5,11.5c0,0.8 -0.7,1.5 -1.5,1.5z"/>
+     </g>
+    </g>
+   </g>
+  </g>
+ </g>
+</svg>

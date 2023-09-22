@@ -1,0 +1,91 @@
+{% extends 'tickets/base.html' %}
+{% load static %}
+{% block header %}
+    <style>
+        select:first-of-type:not([name*="0-match"]), label[for*="match"]  {
+            display: none;
+        }</style>
+{% endblock %}
+{% block content %}
+    <section class="section">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Добавление билетов</h5>
+                        <form class="row g-3" action="{% url 'tickets:add_tickets' match=match %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="form-error">{{ form.non_field_errors }}</div>
+
+                            {{ formset.management_form }}
+                            {% for dict in formset.non_field_errors  %}
+                                {% for error in dict.values %}
+                                    {{ error }}
+                                {% endfor %}
+                            {% endfor %}
+
+                            <div class="col-12">
+                                <ul class="list-group list-group-flush">
+                                    {% for form in formset %}
+                                        <li class="list-group-item list-group-item-action">
+                                            {{ form.non_field_errors }}
+                                            {% for field_set in form %}
+                                                {#            {{field_set.label_tag }} {{ field_set }}#}
+                                                {#            <div class="form-error">{{ field_set.errors }}</div><p></p>#}
+
+                                                    <label class="form-label" for="{{ field_set.id_for_label }}">{{field_set.label}}: </label>{{ field_set }}
+                                                    <div class="form-error">{{ field_set.errors }}</div>
+
+                                            {% endfor %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+
+                            {#        <input type="button" value="Add More" id="add_more_tickets">#}
+                        <div class="col-12 justify-content-center">
+                                <button class="btn btn-cust" type="submit">Добавить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="{% static 'tickets/js/jquery.formset.js' %}"></script>
+{% endblock %}
+    {#<script>#}
+    {#$('#add_more_tickets').click(function() {#}
+    {#        var form_idx = $('#id_tickets-TOTAL_FORMS').val();#}
+    {#        $('formset').append($('#empty-form').html().replace(/__prefix__/g, form_idx));#}
+    {#        $('#id_tickets-TOTAL_FORMS').val(parseInt(form_idx) + 1);#}
+    {#    });#}
+    {#document.addEventListener('click', (event)=>{#}
+    {#        if (event.target.id == 'add-more') {#}
+    {#            add_new_form(event)#}
+    {#        }#}
+    {#    })#}
+    {#    function add_new_form(event) {#}
+    {#        if (event) {#}
+    {#            event.preventDefault()#}
+    {#        }#}
+    {#        const totalNewForms = document.getElementById('id_form-TOTAL_FORMS')#}
+    {#        const currentIngredientForms = document.getElementsByClassName('ingredient-form')#}
+    {#        const currentFormCount = currentIngredientForms.length // + 1#}
+    {#        const formCopyTarget = document.getElementById('ingredient-form-list')#}
+    {#        const copyEmptyFormEl = document.getElementById('empty-form').cloneNode(true)#}
+    {#        copyEmptyFormEl.setAttribute('class', 'ingredient-form')#}
+    {#        copyEmptyFormEl.setAttribute('id', `form-${currentFormCount}`)#}
+    {#        const regex = new RegExp('__prefix__', 'g')#}
+    {#        copyEmptyFormEl.innerHTML = copyEmptyFormEl.innerHTML.replace(regex, currentFormCount)#}
+    {#        totalNewForms.setAttribute('value', currentFormCount + 1)#}
+    {#        // now add new empty form element to our html form#}
+    {#        formCopyTarget.append(copyEmptyFormEl)#}
+    {#    }#}
+    {#</script>#}

@@ -1,0 +1,94 @@
+{% extends 'tickets/base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+    <section class="section">
+        <div class="row justify-content-center">
+
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body pb-1">
+                        <h5 class="card-title">Расписание матчей<span></span></h5>
+                        <form method="get">
+
+                            <div class="card mb-5" id="navbarSupportedContent">
+                                <div class="accordion" id="accordionPanels">
+
+                                    {#                                    {{ field|widget_type }}#}
+                                    {#                            {% if field|widget_type != 'csvselect' %}#}
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header " id="match-heading">
+                                            <button class="accordion-button text-dark bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#match" aria-expanded="true" aria-controls="match">
+                                                Фильтры
+                                            </button>
+                                        </h2>
+                                        <div id="match" class="accordion-collapse collapse show" aria-labelledby="match">
+                                            <div class="accordion-body">
+                                                <div class="row">
+                                                    {% for field in filter.form %}
+                                                        <div class="col-lg-3 col-sm-6">
+                                                            <strong>{{field.label}}</strong>
+                                                            {% if field|widget_type == 'select' or field|widget_type == 'csvselect' %}
+                                                                {{ field|add_class:"form-select show" }}
+                                                            {% elif field|widget_type == 'checkboxselectmultiple' %}
+                                                                {% for choice in field %}
+                                                                    <div >
+                                                                        {{ choice }}</div>
+                                                                {% endfor %}
+                                                            {% elif field|widget_type == 'rangewidget' %}
+                                                                <div class="row mb-3 justify-content-xl-center align-items-center">
+                                                                    {{ field|add_class:"form-control ml-xl-4 mr-xl-4"|append_attr:"style:max-width: 90px;" }}
+                                                                </div>
+                                                            {% else %}
+                                                                {{ field|add_class:"form-control show" }}
+                                                            {% endif %}
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                                <div class="row p-3 justify-content-center align-items-center">
+                                                    <input type="submit" class="btn btn-cust btn-outline col-lg-6" value="Применить"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {#                                    {% endif %}#}
+                                </div>
+
+
+                            </div>
+                        </form>
+                        <div class="table-responsive">
+
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Матч</th>
+                                    <th scope="col">Время</th>
+                                    <th scope="col">Турнир</th>
+                                    <th scope="col">Стадион</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for match in filter.qs %}
+                                    {#                                {% for match in matches %}#}
+                                    <tr>
+                                        <th>{{ match }}</th>
+                                        <td>{{ match.datetime_match }}</td>
+                                        <td>{{ match.tournament }}</td>
+                                        <td>{{ match.stadium }}</td>
+
+                                        <td>{% if match.ticket_set.all %}<a href="{{ match.get_absolute_url }}"><button type="button" class="btn btn-cust">Купить</button></a>{% endif %}</td>
+
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

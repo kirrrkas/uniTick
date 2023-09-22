@@ -1,0 +1,156 @@
+{% extends 'tickets/base.html' %}
+{% load static %}
+{% load humanize %}
+{% load cart %}
+{% block header %}
+    <style>
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none; // Yeah, yeah everybody write about it
+        }
+
+        input[type='number'],
+        input[type="number"]:hover,
+        input[type="number"]:focus {
+            appearance: none;
+            -moz-appearance: textfield;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <section class="mb-4">
+        <div class="container">
+            <div class="row gx-5">
+                <aside class="col-lg-6">
+                    <div id="carouselExampleFade" class="carousel slide carousel-fade carousel-dark border mb-3 d-flex justify-content-center " data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for productphoto in product.productphoto_set.all %}
+                                {% if forloop.first %}
+                                    <div class="carousel-item active" data-bs-interval="20000">
+                                        <img src="{{ MEDIA_URL }}{{ productphoto.photo }}" class="d-block w-100" alt="...">
+                                    </div>
+                                {% else %}
+                                    <div class="carousel-item">
+                                        <img src="{{ MEDIA_URL }}{{ productphoto.photo }}" class="d-block w-100" alt="...">
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% if product.productphoto_set.all|length > 1 %}
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Предыдущий</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Следующий</span>
+                            </button>
+                        {% endif %}
+                    </div>
+                </aside>
+                <main class="col-lg-6">
+                    <div class="ps-lg-3">
+                        <h4 class="title text-dark">
+                            {{ product.name }}
+                        </h4>
+
+                        <div class="mb-3">
+                            <span class="h5">{{ product.price|intcomma }} руб.</span>
+                        </div>
+
+                        <p>{{ product.description|linebreaks }}</p>
+
+                        <div class="row">
+                            <dt class="col-4 col-lg-3">Клуб: </dt>
+                            <dd class="col-8 col-lg-9">{{ product.club }}</dd>
+                            <dt class="col-4 col-lg-3">Категория: </dt>
+                            {% for category in product.categories.all %}
+                                {% if forloop.first %}
+                                    <dd class="col-8 col-lg-9">{{ category }}</dd>
+                                {% else %}
+                                    <dt class="col-4 col-lg-3"></dt>
+                                    <dd class="col-8 col-lg-9">{{ category }}</dd>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <hr />
+                        <div class="row mb-4">
+                        {% if option_values %}
+                            <div class="col-md-4 col-6">
+                                <label class="mb-2">{{ option_name }}</label>
+                                <select class="form-select" id="options">
+                                    {% for elem in option_values %}
+                                        <option id="{{ elem.id }}">{{ elem.value }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        {% endif %}
+                            <!-- col.// -->
+                            <div class="col-md-4 col-6 mb-3">
+                                <label class="mb-2 d-block">Количество</label>
+                                <div class="input-group mb-3" style="width: 150px;">
+                                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-white border border-secondary px-3" type="button" id="button-addon1" data-mdb-ripple-color="dark">
+                                        <i class="bi bi-dash"></i>
+                                    </button>
+                                    <input type="number" min="1" max="5" name="quantity" id="quantity" value="1" class="form-control text-center border border-secondary" aria-label="Количество" aria-describedby="button-addon1" />
+                                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-white border border-secondary px-3" type="button" id="button-addon2" data-mdb-ripple-color="dark">
+                                        <i class="bi bi-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form id="product-form" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{ product.pk }}" name="product">
+                            <button type="submit" name="buy_button" class="btn btn-cust" id="action--buy">
+                                <i class="me-1 fa fa-shopping-basket"></i> Добавить в корзину
+                            </button>
+                        </form>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+    <!-- content -->
+
+    {#    <section class="bg-light border-top py-4">#}
+    {#        <div class="container">#}
+    {#            <div class="row gx-4">#}
+    {#                <div class="col-lg-8">#}
+    {#                    <div class="px-0 rounded-2 shadow-0">#}
+    {#                        <div class="card">#}
+    {#                            <div class="card-body">#}
+    {#                                <h5 class="card-title">Похожие товары</h5>#}
+    {#                                {% for product in product.categories.first.product_set.all %}#}
+    {#                                    {% if forloop.last %}#}
+    {#                                    <div class="d-flex">#}
+    {#                                    {% else %}#}
+    {##}
+    {#                                <div class="d-flex mb-3">#}
+    {#                                {% endif %}#}
+    {##}
+    {#                                        <a href="#" class="me-3">#}
+    {#                                            <img src="{{ MEDIA_URL }}{{ product.productphoto_set.first.photo }}" style="min-width: 96px; height: 96px;" class="img-md img-thumbnail" />#}
+    {#                                        </a>#}
+    {#                                        <div class="info">#}
+    {#                                            <a href="#" class="nav-link mb-1">#}
+    {#                                                {{ product.name }}#}
+    {#                                            </a>#}
+    {#                                            <strong class="text-dark ms-3"> {{ product.price }} руб.</strong>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                {% endfor %}#}
+    {##}
+    {##}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </section>#}
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'shop/js/product.js' %}"></script>
+{% endblock %}

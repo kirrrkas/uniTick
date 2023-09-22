@@ -1,0 +1,45 @@
+{% extends 'tickets/base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block content %}
+    <section class="section">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Регистрация</h5>
+                        <form class="row g-3" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="form-error">{{ form.non_field_errors }}</div>
+
+                            {% for field in form %}
+                                <div class="col-12">
+                                    <label class="form-label" for="{{ field.id_for_label }}">
+                                        {{field.label}}:
+                                    </label>
+                                    {% if field|widget_type == 'select' %}
+                                        {{ field|add_class:"form-select" }}
+                                    {% elif field|widget_type == 'checkboxinput' %}
+                                        {{ field|add_class:"form-check-input" }}
+                                    {% else %}
+                                        {{ field|add_class:"form-control" }}
+                                    {% endif %}
+                                    <div class="form-error">{{ field.errors }}</div>
+                                </div>
+                            {% endfor %}
+                            <div class="col-12">
+                                <button class="btn btn-cust" type="submit">Зарегистрироваться</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
+    <script src="{% static 'userapp/js/phone_number_mask.js' %}"></script>
+{% endblock %}

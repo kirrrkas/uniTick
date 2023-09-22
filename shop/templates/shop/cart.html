@@ -1,0 +1,128 @@
+{% extends 'tickets/base.html' %}
+{% load static %}
+{% load humanize %}
+{% load cart %}
+{% block header %}
+    <style>
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none; // Yeah, yeah everybody write about it
+        }
+
+        input[type='number'],
+        input[type="number"]:hover,
+        input[type="number"]:focus {
+            appearance: none;
+            -moz-appearance: textfield;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <section class="bg-light">
+        <div class="container">
+            <div class="row">
+                <!-- cart -->
+
+                {% if products %}
+                    <div class="col-lg-9">
+                        <div class="card border shadow-0 pl-4 pr-4 ">
+                            <h4 class="card-title mb-4">Ваша корзина</h4>
+                            {% for product_value, quantity_price in products.items %}
+                                <div class="row gy-3 mb-4">
+                                    <div class="col-lg-6">
+                                        <div class="me-lg-5">
+                                            <div class="d-flex">
+                                                <img src="{{ MEDIA_URL }}{{ product_value.product.productphoto_set.first.photo }}" class="border rounded me-3" style="width: 96px; height: 96px;" />
+                                                <div class="">
+                                                    <a href="{% url 'shop:product' product_slug=product_value.product.slug %}" class="">{{ product_value.product.name }}</a>
+                                                    <p class="text-muted">{{ product_value.option_value }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 col-6 d-flex flex-row flex-lg-column text-nowrap">
+
+                                        <div class="pr-4">
+                                            <div class="input-group mb-3 me-4" style="width: 90px">
+                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-white border px-1" type="button" id="button-addon1" data-mdb-ripple-color="dark">
+                                                    <i class="bi bi-dash"></i>
+                                                </button>
+                                                <input  type="number" min="1" max="5" name="quantity" id="quantity" value="{{ quantity_price.0 }}" class="form-control text-center border" aria-label="Количество" aria-describedby="button-addon1" />
+                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-white border px-1" type="button" id="button-addon2" data-mdb-ripple-color="dark">
+                                                    <i class="bi bi-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="">
+                                            <text class="h6">₽{{ quantity_price.1|intcomma }}</text> <br />
+                                            <small class="text-muted text-nowrap"> ₽{{ product_value.product.price|intcomma }} / шт. </small>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 d-flex justify-content-sm-start justify-content-md-end justify-content-lg-end justify-content-xl-end mb-2">
+                                        <div class="float-md-end mr-2 ml-2">
+                                            <form id="product-form-update" method="post" action="{% url 'shop:update' %}">
+                                                {% csrf_token %}
+                                                <input type="hidden" value="{{ product_value.pk }}" name="product">
+                                                <button type="submit" name="update_button" class="btn btn-cust btn-outline mb-2 w-100" id="update--buy">
+                                                   Обновить
+                                                </button>
+                                            </form>
+                                            <form id="product-form-delete" method="post" action="{% url 'shop:delete' %}">
+                                                {% csrf_token %}
+                                                <input type="hidden" value="{{ product_value.pk }}" name="product">
+                                                <button type="submit" name="delete_button" class="btn btn-outline-danger border w-100" id="delete--buy">
+                                                    Удалить
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>{% if not forloop.last %}
+                                <hr>
+                            {% endif %}
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                    <!-- cart -->
+                    <!-- summary -->
+                    <div class="col-lg-3">
+                        <div class="card shadow-0 border ">
+                            <div class="card-body pt-3">
+                                <div class="d-flex justify-content-between">
+                                    <p class="mb-2">Итоговая стоимость:</p>
+                                    <p class="mb-2">₽{{ sum_cart|intcomma }}</p>
+                                </div>
+
+                                <div class="mt-3">
+                                    <form id="product-form" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" name="buy_button" class="btn btn-cust w-100 shadow-0 mb-2" id="action--buy">
+                                            Оформить заказ
+                                        </button>
+                                    </form>
+                                    <a href="{% url 'shop:home' %}" class="btn btn-light w-100 border mt-2"> Вернуться в магазин </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- summary -->
+                {% else %}
+                    <div class="card mb-4 border shadow-0">
+                        <div class="p-4 d-flex justify-content-between">
+                            <div class="">
+                                <h5 class="card-title">Вы не добавили ни одного товара в корзину</h5>
+                                <p class="mb-0 text-wrap "></p>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center flex-column flex-md-row">
+                                <a href="{% url 'shop:home' %}" class="btn  btn-cust shadow-0 text-nowrap w-100">Перейти к покупкам</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'shop/js/cart.js' %}"></script>
+{% endblock %}

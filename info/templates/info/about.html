@@ -1,0 +1,49 @@
+{% extends 'tickets/base.html' %}
+{% load static %}
+{% block header %}
+    <link rel="stylesheet" href="{% static 'info/css/info_style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section id="blog" class="blog">
+        <div class="container" data-aos="fade-up">
+
+            <div class="row">
+
+                <div class="col-lg-8 entries">
+
+                    <article class="entry entry-single">
+
+                        <div class="entry-img row justify-content-center p-3">
+                            <img src="{{ MEDIA_URL }}{{ info.tickets_key.logo }}" alt="" class="card-img-top" style="width: 180px">
+                        </div>
+
+                        <h2 class="entry-title">
+                            {{ info.tickets_key.name }}
+                        </h2>
+
+
+                        <div class="entry-content">
+                            {{ info.description|linebreaks }}
+                        </div>
+
+                    </article><!-- End blog entry -->
+                </div><!-- End blog entries list -->
+                <div class="col-lg-4">
+                    <div class="sidebar">
+                        <h3 class="sidebar-title">Последние новости</h3>
+                        <div class="sidebar-item recent-posts">
+                            {% for article in articles %}
+                                <div class="post-item clearfix">
+                                    <img src="{{ MEDIA_URL }}{{ article.image }}" alt="">
+                                    <h4><a href="{% url 'info:article' article_slug=article.slug %}">{{ article.title }}</a></h4>
+                                    <time datetime="{{ article.time_create }}">{{ article.time_create }}</time>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div><!-- End sidebar -->
+                </div><!-- End blog sidebar -->
+            </div>
+        </div>
+    </section><!-- End Blog Single Section -->
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'tickets/base.html' %}
+{% load static %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{% static 'tickets/css/component.css' %}"/>
+{% endblock %}
+
+
+{% block content %}
+
+    <section class="section">
+        <div class="row justify-content-center">
+
+            <!-- Left side columns -->
+            <div class="col-lg-8 justify-content-center">
+                <div class="card justify-content-center">
+                    <div class="card-body justify-content-center">
+                        <h5 class="card-title">{{ match }} <span>{{ sector }}</span></h5>
+                        <div class="plan">
+                            <div class="rows rows--mini">
+                                {% for row in max_row %}
+                                    <div class="row_s">
+                                        <div>{{ row }}</div>
+                                        {% for ticket in tickets %}
+                                            {% if ticket.t_place.row == row %}
+                                                {% if ticket.on_sale is True %}
+                                                    <div class="row__seat seat--tooltip" data-tooltip="{{ ticket.t_place.place }}" id="{{ ticket.id }}"></div>
+                                                {% else %}
+                                                    <div class="row__seat row__seat--reserved" data-tooltip="{{ ticket.t_place.place }}" id="{{ ticket.id }}"></div>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        <div>{{ row }}</div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <!-- /rows -->
+                            <br><div class="plan__price" data-price="{{ price }}">Цена билета: {{ price }} рублей</div>
+                            <div class="plan__sum__price" data-sum-price=""></div>
+                            <ul class="legend">
+                                <li class="legend__item legend__item--free">Свободные</li>
+                                <li class="legend__item legend__item--reserved">Резерв</li>
+                                <li class="legend__item legend__item--selected">Выбранные</li>
+                            </ul>
+                            <br>
+                            <form id="buy-form" method="post">
+                                {% csrf_token %}
+                                <button disabled="" type="submit" name="buy_button" class="btn btn-cust action action--buy">Купить</button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'tickets/js/seats.js' %}"></script>
+    <script src="{% static 'tickets/js/classie.js' %}"></script>
+{% endblock %}

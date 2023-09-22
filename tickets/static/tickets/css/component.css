@@ -1,0 +1,223 @@
+.rows--mini {
+  /*width: 235px;*/
+  margin: 0 auto;
+  /*overflow: auto;*/
+}
+
+.row_s {
+  display: -webkit-flex;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  font-size: 13px;
+}
+@media (max-width: 768px) {
+  .row_s {
+    font-size: 8px;
+  }
+}
+
+.row__seat {
+  -webkit-flex: none;
+  flex: none;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.rows--mini .row__seat {
+  width: 15px;
+  height: 15px;
+  background: rgba(72, 72, 78, 0.5);
+  margin: 2px;
+  border-radius: 1px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .rows--mini .row__seat {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+.rows--mini .row__seat:hover {
+  background: #57e683;
+}
+
+.plan__title {
+  text-align: center;
+  font-size: 1em;
+  margin: 0.25em 0 0.5em;
+}
+
+.plan__price {
+  text-align: center;
+  font-size: 1em;
+  margin: 0.25em 0 0.5em;
+}
+
+.plan__sum__price {
+  text-align: center;
+  font-size: 1em;
+  margin: 0.25em 0 0.5em;
+}
+
+.legend {
+  list-style: none;
+  margin: 1em 0 0 0;
+  padding: 0;
+  text-align: center;
+}
+
+.legend__item {
+  font-size: 0.85em;
+  font-weight: bold;
+  margin: 0 9px 0 0;
+  display: inline-block;
+}
+
+.legend__item::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  margin: 0 5px 0 0;
+  border-radius: 2px;
+  background: rgba(72, 72, 78, 0.5);
+}
+
+.legend__item--reserved::before {
+  background: #de6363;
+}
+
+.legend__item--selected::before,
+.rows--mini .row__seat--selected,
+.rows--mini .row__seat--selected:hover {
+  background: #21c252;
+}
+
+/* Tooltip */
+.seat--tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.seat--tooltip::before,
+.seat--tooltip::after {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  left: 50%;
+}
+
+.seat--tooltip:hover::before,
+.seat--tooltip:hover::after {
+  opacity: 1;
+  -webkit-transition: opacity 0.3s ease, -webkit-transform 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  -webkit-transition-delay: 0.1s;
+  transition-delay: 0.1s;
+}
+
+.seat--tooltip::before {
+  bottom: 100%;
+  border: solid transparent;
+  content: '';
+  height: 0;
+  width: 0;
+  z-index: 1001;
+  pointer-events: none;
+  border-color: transparent;
+  border-top-color: #57e683;
+  border-width: 6px;
+  margin-left: -6px;
+  -webkit-transform: translate3d(0, 5px, 0);
+  transform: translate3d(0, 5px, 0);
+}
+
+.seat--tooltip:hover::before {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+.seat--tooltip::after {
+  content: attr(data-tooltip);
+  background: #57e683;
+  border-radius: 3px;
+  color: #fff;
+  font-weight: bold;
+  z-index: 1000;
+  font-size: 14px;
+  padding: 8px 10px;
+  bottom: 100%;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+  -webkit-transform: translate3d(-50%, -5px, 0);
+  transform: translate3d(-50%, -5px, 0);
+  min-width: 38px;
+  text-align:center;
+}
+
+.seat--tooltip:hover::after {
+  -webkit-transform: translate3d(-50%, -10px, 0);
+  transform: translate3d(-50%, -10px, 0);
+}
+
+.action--buy {
+  /*width: 197px;*/
+  /*height: 55px;*/
+  /*left: 1282px;*/
+  /*top: 1064px;*/
+  width: 20%;
+  min-width: 130px;
+  min-height: 50px;
+
+  /*background: linear-gradient(180deg, rgba(26, 42, 67, 0.89) 34.55%, #1A2A43 291.82%);*/
+  border-radius: 100px;
+
+  font-style: normal;
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 21px;
+  /* identical to box height */
+
+  text-align: center;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+
+  /*color: #D9D9D9;*/
+  margin: 1em auto;
+
+  display: block;
+}
+
+/*.action--buy:hover {*/
+/*  background: #21c252;*/
+/*}*/
+
+.action--buy:disabled {
+
+}
+
+
+.plan {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  position: relative;
+  margin: 0 auto;
+
+  /*overflow: auto;*/
+  padding-top: 20px;
+}
+
+.rows--mini .row__seat:hover {
+  background: rgba(72, 72, 78, 0.5);
+}
+
+.rows--mini .row__seat--selected:hover {
+  background: #21c252;
+}
+
+.rows--mini .row__seat--reserved,
+.rows--mini .row__seat--reserved:hover {
+  background: #de6363;
+}

@@ -1,0 +1,185 @@
+{% extends 'tickets/base.html' %}
+{% load static %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{% static 'tickets/css/stadium.css' %}"/>
+{% endblock %}
+
+{% block content %}
+
+    <section class="section">
+        <div class="row justify-content-center">
+
+            <!-- Left side columns -->
+            <div class="col-lg-8 justify-content-center">
+                <div class="card justify-content-center">
+                    <div class="card-body justify-content-center">
+                        <h5 class="card-title">{{ match }}<span></span></h5>
+
+                        <div class="row justify-content-center field">
+                            <div class="col-1 align-self-center">
+                                {% for sector in sectors  %}
+                                    {% if sector.side == '4LEFT_lower'%}
+                                        <div class="row_s">
+                                            <a href="{% url 'tickets:sector' match_slug=match.slug sector_slug=sector.slug %}">
+                                                <div class="row__sector sector--tooltip" data-tooltip=" {{ sector.name }}" id="{{ sector.name }}">{{ sector.name }}</div>
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-8 row align-items-center justify-content-center">
+
+
+                                {#                            <div class="row col-8 justify-content-center">#}
+                                <div class="row_s">
+                                    {% for sector in sectors %}
+                                        {% if sector.side == '1TOP_LEFT_lower'%}
+                                            <a href="{% url 'tickets:sector' match_slug=match.slug sector_slug=sector.slug %}">
+                                                <div class="row__sector sector--tooltip" data-tooltip=" {{ sector.name }}" id="{{ sector.name }}">{{ sector.name }}</div>
+                                            </a>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {#                            </div>#}
+                                    {#                            <div class="row col-10">#}
+                                    {% for sector in sectors %}
+                                        {% if sector.side == '2TOP_lower'%}<a href="{% url 'tickets:sector' match_slug=match.slug sector_slug=sector.slug %}"></a>
+                                            <a href="{% url 'tickets:sector' match_slug=match.slug sector_slug=sector.slug %}">
+                                                <div class="row__sector sector--tooltip" data-tooltip=" {{ sector.name }}" id="{{ sector.name }}">{{ sector.name }}</div>
+                                            </a>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% for sector in sectors %}
+                                        {% if sector.side == '3TOP_RIGHT_lower'%}
+                                            <a href="{% url 'tickets:sector' match_slug=match.slug sector_slug=sector.slug %}">
+                                                <div class="row__sector sector--tooltip" data-tooltip=" {{ sector.name }}" id="{{ sector.name }}">{{ sector.name }}</div>
+                                            </a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+
+                                <img src="{% static 'tickets/images/pitch.png' %}"  alt="" style="width: 97%;">
+
+                                <div class="row_s">
+                                    {% for sector in sectors %}
+                                        {% if sector.side == '6BOTTOM_lower'%}
+
+                                            <a href="{% url 'tickets:sector' match_slug=match.slug sector_slug=sector.slug %}">
+                                                <div class="row__sector sector--tooltip" data-tooltip=" {{ sector.name }}" id="{{ sector.name }}">{{ sector.name|slice:":4" }}</div>
+                                            </a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="col-1 align-self-center">
+                                {% for sector in sectors reversed %}
+                                    {% if sector.side == '5RIGHT_lower'%}
+                                        <div class="row_s">
+                                            <a href="{% url 'tickets:sector' match_slug=match.slug sector_slug=sector.slug %}">
+                                                <div class="row__sector sector--tooltip" data-tooltip=" {{ sector.name }}" id="{{ sector.name }}">{{ sector.name }}</div>
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <!-- /rows -->
+            </div>
+        </div>
+        </div>
+    </section>
+
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+{#                        <div class="plan">#}
+                        {#                            <div class="rows rows--mini">#}
+                        {##}
+                        {#                                {% regroup sectors by side as sectors_list %}#}
+                        {#                                {% for sector in sectors_list %}#}
+                        {#                                    {{ sector.grouper }}#}
+                        {##}
+                        {#                                    {% if sector.grouper == '1TOP_LEFT_lower' %}#}
+                        {##}
+                        {#                            <div class="col-1 align-self-start justify-content-start">#}
+                        {#                                        {% for name in sector.list|dictsortreversed:"name"%}#}
+                        {##}
+                        {#                                            <div class="row__seat seat--tooltip" data-tooltip=" {{ name.name }}" id="{{ name.name }}"></div>#}
+                        {#                                            </div>#}
+                        {#                                        {% endfor %}#}
+                        {#                            </div>#}
+                        {#                                    {% endif %}#}
+                        {#                                    {% if sector.grouper == '2TOP_lower' %}#}
+                        {#                                        <div class="row_s">#}
+                        {#                                <div class="col-8 align-self-start justify-content-start">#}
+                        {#                                            {% for name in sector.list|dictsortreversed:"name"%}#}
+                        {#                                                <div class="row__seat seat--tooltip" data-tooltip=" {{ name.name }}" id="{{ name.name }}"></div>#}
+                        {#                                    </div>#}
+                        {#                                            {% endfor %}#}
+                        {#                                        </div>#}
+                        {#                                    {% endif %}#}
+                        {##}
+                        {#                                    </div>{% endfor %}#}
+
+
+
+
+{#    {% regroup sectors by side as sectors_list %}#}
+    {#    {% for sectors in sectors_list %}#}
+    {#        {% if sectors.grouper != '4LEFT_lower' and  sectors.grouper != '6BOTTOM_lower'%}#}
+    {#            <div class="row justify-content-center">#}
+    {#                                    <div class="col-1 align-self-start justify-content-start">#}
+    {#                {% for sector in sectors.list|dictsortreversed:"name"%}#}
+    {#                    {{ sector.name }}#}
+    {#                {% endfor %}#}
+    {#                                    </div>#}
+    {#            </div>#}
+    {#        {% endif %}#}
+    {#        {% if sectors.grouper == '4LEFT_lower' %}#}
+    {#            {% for sector in sectors.list|dictsort:"name"%}#}
+    {#                <li>{{ sector.name }}</li>#}
+    {#            {% endfor %}#}
+    {#        {% endif %}#}
+    {#        {% if sectors.grouper == '6BOTTOM_lower' %}#}
+    {#            {% for sector in sectors.list|dictsort:"name"%}#}
+    {#                <li>{{ sector.name }}</li>#}
+    {#            {% endfor %}#}
+    {#        {% endif %}#}
+    {#    {% endfor %}#}
+    {##}
+    {##}
+    {#    {% for sector in sectors_list %}#}
+    {#        <li>{{ sector.grouper }}#}
+    {#            <ul>#}
+    {#                {% if sector.grouper != '4LEFT_lower' and  sector.grouper != '6BOTTOM_lower'%}#}
+    {#                    {% for name in sector.list|dictsortreversed:"name"%}#}
+    {#                        <li>{{ name }}</li>#}
+    {#                    {% endfor %}#}
+    {#                {% endif %}#}
+    {#                {% if sector.grouper == '4LEFT_lower' %}#}
+    {#                    {% for name in sector.list|dictsort:"name"%}#}
+    {#                        <li>{{ name }}</li>#}
+    {#                    {% endfor %}#}
+    {#                {% endif %}#}
+    {#                {% if sector.grouper == '6BOTTOM_lower' %}#}
+    {#                    {% for name in sector.list|dictsort:"name"%}#}
+    {#                        <li>{{ name }}</li>#}
+    {#                    {% endfor %}#}
+    {#                {% endif %}#}
+    {#            </ul>#}
+    {#        </li>#}
+    {#    {% endfor %}#}
+    {#    </ul>#}
+
+
+    {#                        <div class="row justify-content-center">#}
+    {#                            <div class="col-1 align-self-start justify-content-start">#}
